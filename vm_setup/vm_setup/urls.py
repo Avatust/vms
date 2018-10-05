@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from scripts.linux import deploy
+
 urlpatterns = [
+    path('ubuntu/<int:vm_set>/', deploy.ubuntu),
+    path('kali/<int:vm_set>/', deploy.kali),
     path('admin/', admin.site.urls),
 ]
