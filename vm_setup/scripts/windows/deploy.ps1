@@ -21,6 +21,7 @@ $W10 = 'windows10'
 $WS = 'wserver'
 
 ### CONTROL VARS ###
+$server_address = "{{ server_address }}"
 $set_no = {{ set_no }}
 $domain = "Set_$set_no.ad"
 $office_url = '{{ office_url|default:"none" }}'
@@ -41,10 +42,19 @@ switch ($machine) {
 
 # paths and log
 $this_script = $MyInvocation.MyCommand.Definition.ToString()
-$log_path = "C:\course_config.log"
+$log_path = 'C:\course_config.log'
+
+$web_client = New-Object System.Net.WebClient
+$dict = New-Object System.Collections.Specialized.NameValueCollection
+$dict.Add('machine_os', $machine)
+$dict.Add('set_number', $set_no)
+$dict.Add('message', 'log setup')
+
 function log {
     param ($message)
     echo $message >> $log_path
+    $dict['message'] = $message
+    $web_client.UploadValues($server_address, 'POST', $dict)
 }
 log "(re)start at $((Get-Date).ToString())"
 $log = Get-Content -Path $log_path
@@ -93,6 +103,7 @@ if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
 }
 
 # unschedule and clean
+log 'done'
 SCHTASKS /Delete /TN 'course_config' /F
 Remove-Item -Path "$this_script" -Force
 Remove-Item -Path "$log_path" -Force
