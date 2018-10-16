@@ -1,10 +1,10 @@
-{% include "./add_user.ps1" %}
-{% include "./change_ip.ps1" %}
-{% include "./create_ad.ps1" %}
-{% include "./disable_updates.ps1" %}
-{% include "./forward_dns.ps1" %}
-{% include "./install_ms_office.ps1" %}
-{% include "./join_domain.ps1" %}
+{% include "scripts/windows/add_user.ps1" %}
+{% include "scripts/windows/change_ip.ps1" %}
+{% include "scripts/windows/create_ad.ps1" %}
+{% include "scripts/windows/disable_updates.ps1" %}
+{% include "scripts/windows/forward_dns.ps1" %}
+{% include "scripts/windows/install_ms_office.ps1" %}
+{% include "scripts/windows/join_domain.ps1" %}
 
 
 $ADD_USER = 'ADD_USER'
