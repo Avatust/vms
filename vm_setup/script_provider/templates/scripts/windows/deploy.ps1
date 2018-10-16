@@ -21,19 +21,19 @@ $W10 = 'windows10'
 $WS = 'wserver'
 
 ### CONTROL VARS ###
-$server_address = "{{ server_address }}"
-$set_no = {{ set_no }}
-$domain = "Set_$set_no.ad"
+$logging_url = "{{ logging_url }}"
+$set_number = {{ set_number }}
+$domain = "Set_$set_number.ad"
 $office_url = '{{ office_url|default:"none" }}'
 $machine = '{{ machine }}'
-$dns = "10.114.48.$(5*$set_no - 2)"
+$dns = "10.114.48.$(5*$set_number - 2)"
 switch ($machine) {
     $WS  {
-        $ip = "10.114.48.$(5*$set_no - 2)"
+        $ip = "10.114.48.$(5*$set_number - 2)"
         $dns = '193.167.197.100'
     }
-    $W7  { $ip = "10.114.48.$(5*$set_no - 1)" }
-    $W10 { $ip = "10.114.48.$(5*$set_no)" }
+    $W7  { $ip = "10.114.48.$(5*$set_number - 1)" }
+    $W10 { $ip = "10.114.48.$(5*$set_number)" }
     Default { echo 'bad machine'; pause}
 }
 
@@ -47,14 +47,14 @@ $log_path = 'C:\course_config.log'
 $web_client = New-Object System.Net.WebClient
 $dict = New-Object System.Collections.Specialized.NameValueCollection
 $dict.Add('machine_os', $machine)
-$dict.Add('set_number', $set_no)
+$dict.Add('set_number', $set_number)
 $dict.Add('message', 'log setup')
 
 function log {
     param ($message)
     echo $message >> $log_path
     $dict['message'] = $message
-    $web_client.UploadValues($server_address, 'POST', $dict)
+    $web_client.UploadValues($logging_url, 'POST', $dict)
 }
 log "(re)start at $((Get-Date).ToString())"
 $log = Get-Content -Path $log_path

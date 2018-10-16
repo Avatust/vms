@@ -8,7 +8,7 @@ iface lo inet loopback
 # The primary network interface
 auto "$ETHERNET_IFNAME"
 iface "$ETHERNET_IFNAME" inet static
-  address 10.114.48.{HOST_NUM}
+  address 10.114.48.$HOST_NUM
   netmask 255.255.255.0
   network 10.114.48.0
   broadcst 10.114.48.255
