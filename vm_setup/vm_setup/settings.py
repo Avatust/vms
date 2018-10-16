@@ -30,13 +30,14 @@ SECRET_KEY = 'sql&oy8kp0zww(p8&+3-n46vio=sv*iz$v4nflylplgq&+)*ud'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'log_server.apps.LogServerConfig',
+    'script_provider.apps.ScriptProviderConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

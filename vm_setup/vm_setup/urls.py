@@ -14,13 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
-from scripts.linux import deploy
 
 urlpatterns = [
     path('log/', include('log_server.urls')),
-    path('ubuntu/<int:vm_set>/', deploy.ubuntu),
-    path('kali/<int:vm_set>/', deploy.kali),
     path('admin/', admin.site.urls),
+    path('', include('script_provider.urls'))
 ]
