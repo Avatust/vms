@@ -108,6 +108,7 @@ if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
 log 'removing self'
 SCHTASKS /Delete /TN 'course_config' /F
 Remove-Item -Path "$this_script" -Force
-Remove-Item -Path "$log_path" -Force
 
 log 'done'
+Remove-Item -Path "$log_path" -Force
+

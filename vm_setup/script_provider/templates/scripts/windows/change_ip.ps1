@@ -13,7 +13,7 @@ function change_ip {
         exit 1
     }
 
-    $net_adapter.EnableStatic($ip, $subnet)
+    $net_adapter.EnableStatic($ip, $subnet) | Out-Null
     #Sleep -Seconds 5
 
     if ($gateway -ne $null) {
