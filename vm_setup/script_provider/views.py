@@ -6,7 +6,7 @@ from django.urls import reverse
 
 def _general(request, set_number, machine, template_name, filename_extension):
 
-    this_host = request.get_host()
+    this_host = "http://" + request.get_host()
     context = {
         "logging_url": this_host + reverse('log_server:new'),
         "office_url": this_host + "/static/Office2016.zip",
