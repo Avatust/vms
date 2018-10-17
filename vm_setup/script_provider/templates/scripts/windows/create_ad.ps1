@@ -4,7 +4,7 @@ function create_ad {
         [Parameter(Mandatory=$true)] [string]$password
     )
 
-    $password=ConvertTo-SecureString $password -AsPlainText -Force
+    $encrypted_password=ConvertTo-SecureString $password -AsPlainText -Force
     $domain_split = $domain.ToUpper().Split('.')
     $netbios = $domain_split[0..($domain_split.Length-2)] -join '_'
 
@@ -22,7 +22,7 @@ function create_ad {
         -InstallDns:$true `
         -LogPath "C:\Windows\NTDS" `
         -NoRebootOnCompletion:$false `
-        -SafeModeAdministratorPassword $password `
+        -SafeModeAdministratorPassword $encrypted_password `
         -SysvolPath "C:\Windows\SYSVOL" `
         -Force:$true
 }
