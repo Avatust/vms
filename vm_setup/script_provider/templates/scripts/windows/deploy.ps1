@@ -70,33 +70,39 @@ SCHTASKS /Create /TN 'course_config' /TR $command /RU System /SC ONSTART /F
 if ($log -notcontains $CHANGE_IP) {
     log $CHANGE_IP
     change_ip -ip $ip -subnet '255.255.255.0' -gateway '10.114.48.1' -dns $dns
+    Sleep -Seconds 5
 }
 
 if ($machine -eq $WS) {
     if ($log -notcontains $CREATE_AD) {
         log $CREATE_AD
         create_ad -domain $domain -password 'Test!!test'
+        Sleep -Seconds 1
     }
 
     if ($log -notcontains $FORWARD_DNS) {
         log $FORWARD_DNS
         forward_dns
+        Sleep -Seconds 1
     }
 
     if ($log -notcontains $ADD_USER) {
         log $FORWARD_DNS
         add_user -domain $domain -name 'test7' -password 'User!!user'
         add_user -domain $domain -name 'test10' -password 'User!!user'
+        Sleep -Seconds 1
     }
 
 } elseif ($log -notcontains $JOIN_DOMAIN) {
         log $JOIN_DOMAIN
         join_domain -domain $domain -username '$domain_base\Administrator' -password 'Opetus2016'
+        Sleep -Seconds 1
 }
 
 if (are_updates_enabled) {
     log 'UPDATES ENABLED'
     disable_updates
+    Sleep -Seconds 1
 } else {
     log 'updates are disabled'
 }
@@ -104,6 +110,7 @@ if (are_updates_enabled) {
 if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
     log $INSTALL_MS_OFFICE
     install_ms_office -office_url $office_url
+    Sleep -Seconds 1
 }
 
 log 'restarting'

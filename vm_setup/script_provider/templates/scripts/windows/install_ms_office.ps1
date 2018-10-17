@@ -11,7 +11,7 @@ function install_ms_office {
     (New-Object System.Net.WebClient).DownloadFile($office_url, $office_zip)
 
     # EXTRACT
-    mkdir $dest_dir
+    mkdir $dest_dir | Out-Null
     $shell_app = New-Object -Com Shell.Application
     $zip_ns = $shell_app.NameSpace($office_zip)
     $dest_ns = $shell_app.NameSpace($dest_dir)
