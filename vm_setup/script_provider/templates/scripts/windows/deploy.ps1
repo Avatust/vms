@@ -102,7 +102,7 @@ if (are_updates_enabled) {
 
 if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
     log $INSTALL_MS_OFFICE
-    install_ms_office -office_rul $office_url
+    install_ms_office -office_url $office_url
 }
 
 log 'restarting'
