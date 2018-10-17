@@ -5,7 +5,12 @@ set_number={{ set_number }}
 
 function log {
     echo $1
-    curl -d "machine_os=$machine&set_number=$set_number&message=$1" -X POST {{ logging_url }}
+    post="machine_os=$machine&set_number=$set_number&message=$1"
+    if (which curl); then
+        curl -d "$post" -X POST {{ logging_url }}
+    elif (which wget); then
+        wget --post-data "$post" {{ logging_url }}
+    fi
 }
 
 case $machine in
