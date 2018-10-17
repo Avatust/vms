@@ -52,6 +52,7 @@ $dict.Add('message', 'log setup')
 
 function log {
     param ($message)
+    echo $message
     echo $message >> $log_path
     $dict['message'] = $message
     $response = $web_client.UploadValues($logging_url, 'POST', $dict)

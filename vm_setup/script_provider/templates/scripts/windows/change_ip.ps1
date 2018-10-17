@@ -17,10 +17,10 @@ function change_ip {
     #Sleep -Seconds 5
 
     if ($gateway -ne $null) {
-        $net_adapter.SetGateways($gateway)
+        $net_adapter.SetGateways($gateway) | Out-Null
     }
 
     if ($dns -ne $null) {
-        $net_adapter.SetDNSServerSearchOrder($dns)
+        $net_adapter.SetDNSServerSearchOrder($dns) | Out-Null
     }
 }
