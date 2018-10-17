@@ -54,13 +54,14 @@ function log {
     param ($message)
     echo $message >> $log_path
     $dict['message'] = $message
-    $web_client.UploadValues($logging_url, 'POST', $dict)
+    $response = $web_client.UploadValues($logging_url, 'POST', $dict)
 }
 log "(re)start at $((Get-Date).ToString())"
 $log = Get-Content -Path $log_path
 
 # schedule
-SCHTASKS /Create /TN 'course_config' /TR "PowerShell -File \"$this_script\"" /RU System /SC ONSTART /F
+$command = "PowerShell -File '$this_script'"
+SCHTASKS /Create /TN 'course_config' /TR $command /RU System /SC ONSTART /F
 
 # network settings (all machines)
 if ($log -notcontains $CHANGE_IP) {
