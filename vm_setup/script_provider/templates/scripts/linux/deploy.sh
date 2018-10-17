@@ -46,6 +46,9 @@ cat > /etc/resolv.conf <<EOM
 {% include "scripts/nameservers" %}
 EOM
 
+log 'removing self'
+rm $0
+
 log 'done'
 echo 'reboot in 2 minutes'
 
