@@ -1,3 +1,5 @@
+$ErrorActionPreference = 'Stop'
+
 {% include "scripts/windows/add_user.ps1" %}
 {% include "scripts/windows/change_ip.ps1" %}
 {% include "scripts/windows/create_ad.ps1" %}
@@ -10,7 +12,6 @@
 $ADD_USER = 'ADD_USER'
 $CHANGE_IP = 'CHANGE_IP'
 $CREATE_AD = 'CREATE_AD'
-$DEPLOY = 'DEPLOY'
 $DISABLE_UPDATES = 'DISABLE_UPDATES'
 $FORWARD_DNS = 'FORWARD_DNS'
 $INSTALL_MS_OFFICE = 'INSTALL_MS_OFFICE'
