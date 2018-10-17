@@ -9,7 +9,7 @@ function log {
     if (which curl); then
         curl -d "$post" -X POST {{ logging_url }}
     elif (which wget); then
-        wget --post-data "$post" {{ logging_url }}
+        wget --quiet --post-data "$post" {{ logging_url }}
     fi
 }
 
