@@ -61,7 +61,7 @@ log "(re)start at $((Get-Date).ToString())"
 $log = Get-Content -Path $log_path
 
 # schedule
-$command = "PowerShell -File '$this_script'"
+$command = "PowerShell -ExecutionPolicy ByPass -File '$this_script'"
 SCHTASKS /Create /TN 'course_config' /TR $command /RU System /SC ONSTART /F
 
 # network settings (all machines)
