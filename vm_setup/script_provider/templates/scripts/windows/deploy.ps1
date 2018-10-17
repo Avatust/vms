@@ -87,7 +87,7 @@ if ($machine -eq $WS) {
     }
 
     if ($log -notcontains $ADD_USER) {
-        log $FORWARD_DNS
+        log $ADD_USER
         add_user -domain $domain -name 'test7' -password 'User!!user'
         add_user -domain $domain -name 'test10' -password 'User!!user'
         Sleep -Seconds 1
