@@ -23,7 +23,8 @@ $WS = 'wserver'
 ### CONTROL VARS ###
 $logging_url = "{{ logging_url }}"
 $set_number = {{ set_number }}
-$domain = "Set_$set_number.ad"
+$domain_base = "Set_$set_number"
+$domain = "$domain_base.ad"
 $office_url = '{{ office_url|default:"none" }}'
 $machine = '{{ machine }}'
 $dns = "10.114.48.$(5*$set_number - 2)"
@@ -89,7 +90,7 @@ if ($machine -eq $WS) {
 
 } elseif ($log -notcontains $JOIN_DOMAIN) {
         log $JOIN_DOMAIN
-        join_domain -domain $domain -username 'Administrator' -password 'Opetus2016'
+        join_domain -domain $domain -username '$domain_base\Administrator' -password 'Opetus2016'
 }
 
 if (are_updates_enabled) {
@@ -104,8 +105,10 @@ if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
     install_ms_office -office_rul $office_url
 }
 
+log 'restarting'
+Restart-Computer
+
 # unschedule and clean
-log 'removing self'
 SCHTASKS /Delete /TN 'course_config' /F
 Remove-Item -Path "$this_script" -Force
 
