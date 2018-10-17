@@ -23,7 +23,11 @@ def _general(request, set_number, machine, template_name, filename_extension):
 
     response['Content-Disposition'] = (
         'attachment; filename='
-        f'{machine}-{set_number}-deploy.{filename_extension}'
+        '{machine}-{set_number}-deploy.{filename_extension}'
+    ).format(
+        machine=machine,
+        set_number=set_number,
+        filename_extension=filename_extension,
     )
 
     return response

@@ -8,8 +8,8 @@ class LogEntry(models.Model):
 
     def __str__(self):
         return (
-            f'{self.machine_os} ({self.set_number}) at '
-            f'{self.created_at.strftime("%Y-%m-%d %H:%M:%S")}: '
-            f'{self.message}'
-        )
+            '{self.machine_os} ({self.set_number}) at '
+            '{self.created_at.strftime("%Y-%m-%d %H:%M:%S")}: '
+            '{self.message}'
+        ).format(self=self)
 
