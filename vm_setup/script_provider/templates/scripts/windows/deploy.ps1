@@ -89,7 +89,7 @@ if ($machine -eq $WS) {
 
 } elseif ($log -notcontains $JOIN_DOMAIN) {
         log $JOIN_DOMAIN
-        join_domain -domain $domain
+        join_domain -domain $domain -username 'Administrator' -password 'Opetus2016'
 }
 
 if (are_updates_enabled) {
