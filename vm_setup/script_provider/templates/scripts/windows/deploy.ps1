@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Inquire'
 
 {% include "scripts/windows/add_user.ps1" %}
 {% include "scripts/windows/change_ip.ps1" %}
@@ -113,13 +113,15 @@ if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
     Sleep -Seconds 1
 }
 
-log 'restarting'
-Restart-Computer
+if ($log -notcontains 'restarting') {
+    log 'restarting'
+    shutdown /r /t 60 ## decide about this
+} else {
+    # unschedule and clean
+    Remove-Item -Path "$this_script" -Force
 
-# unschedule and clean
-SCHTASKS /Delete /TN 'course_config' /F
-Remove-Item -Path "$this_script" -Force
-
-log 'done'
-Remove-Item -Path "$log_path" -Force
+    log 'done'
+    Remove-Item -Path "$log_path" -Force #sometimes not deleted
+    SCHTASKS /Delete /TN 'course_config' /F
+}
 
