@@ -1,0 +1,16 @@
+
+[connection]
+id=eth0
+uuid=$(uuidgen)
+type=802-3-ethernet
+
+[ipv4]
+method=manual
+dns=193.167.197.100;195.148.144.100;
+addresses1=10.114.48.$HOST_NUM;24;10.114.48.1;
+
+[802-3-ethernet]
+duplex=full
+
+[ipv6]
+method=ignore

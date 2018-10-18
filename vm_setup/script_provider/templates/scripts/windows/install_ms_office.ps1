@@ -3,15 +3,15 @@ function install_ms_office {
         [string]$office_url
     )
 
-    # DOWNLOAD
-    $download_dest='Office2016.zip'
-    (New-Object System.Net.WebClient).DownloadFile($office_url, $download_dest)
-
-    # EXTRACT
     $curdir = (pwd).ToString()
-    $office_zip = "$curdir\$download_dest"
+    $office_zip = "$curdir\Office2016.zip"
     $dest_dir = "$curdir\Office2016"
 
+    # DOWNLOAD
+    (New-Object System.Net.WebClient).DownloadFile($office_url, $office_zip)
+
+    # EXTRACT
+    mkdir $dest_dir | Out-Null
     $shell_app = New-Object -Com Shell.Application
     $zip_ns = $shell_app.NameSpace($office_zip)
     $dest_ns = $shell_app.NameSpace($dest_dir)

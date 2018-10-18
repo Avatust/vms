@@ -5,7 +5,12 @@ set_number={{ set_number }}
 
 function log {
     echo $1
-    curl -d "machine_os=$machine&set_number=$set_number&message=$1" -X POST {{ logging_url }}
+    post="machine_os=$machine&set_number=$set_number&message=$1"
+    if (which curl > /dev/null); then
+        curl -d "$post" -X POST {{ logging_url }}
+    elif (which wget > /dev/null); then
+        wget --quiet --post-data "$post" {{ logging_url }}
+    fi
 }
 
 case $machine in
@@ -23,25 +28,38 @@ esac
 
 log "beginning config, host $HOST_NUM"
 
-ETHERNET_IFNAME=$(ip link show | sed -n -e "s/[0-9]: \(e[a-z0-9]*\):.*/\\1/p")
+log "resetting /etc/network/interfaces"
+cat > /etc/network/interfaces <<EOM
+{% spaceless %}
 
-if [ -z "$ETHERNET_IFNAME" ] || [ $(echo "$ETHERNET_IFNAME" | wc -l) -ne 1 ]; then
-    log "Unsure about interface name"
-    echo "enter ethernet's name: "
-    read ETHERNET_IFNAME
+{% if machine == "kali" %}
+    {% include "scripts/linux/kali_interfaces" %}
+{% else %}
+    {% include "scripts/linux/ubuntu_interfaces" %}
+{% endif %}
+
+{% endspaceless %}
+EOM
+
+if [ "$(ls -A /etc/NetworkManager/system-connections)" ]; then
+    log "remove existing connections"
+    rm /etc/NetworkManager/system-connections/*
 fi
 
-log "Using interface $ETHERNET_IFNAME"
-
-cat > /etc/network/interfaces <<EOM
-{% include "scripts/linux/interfaces" %}
+log "insert network profile"
+cat > /etc/NetworkManager/system-connections/eth0 <<EOM
+{% include "scripts/linux/nm_profile" %}
 EOM
 
-cat > /etc/resolv.conf <<EOM
-{% include "scripts/nameservers" %}
-EOM
+chmod 600 /etc/NetworkManager/system-connections/eth0
+
+log 'removing self'
+rm $0
 
 log 'done'
-echo 'reboot in 2 minutes'
+echo 'reboot in 1 minutes'
+shutdown -r +1 &
 
-shutdown -r +2
+# remove history too
+cat /dev/null > $HOME/.bash_history
+history -c
