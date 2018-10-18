@@ -78,6 +78,8 @@ if ($machine -eq $WS) {
         log $CREATE_AD
         create_ad -domain $domain -password 'Test!!test'
         Sleep -Seconds 1
+        shutdown /r /t 10
+        pause
     }
 
     if ($log -notcontains $FORWARD_DNS) {
@@ -104,6 +106,7 @@ if (are_updates_enabled) {
     disable_updates
     Sleep -Seconds 1
     shutdown /r /t 10
+    pause
 } else {
     log 'updates are disabled'
 }
@@ -117,6 +120,7 @@ if ( ($machine -eq $W10) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
 if ($log -notcontains 'restarting') {
     log 'restarting'
     shutdown /r /t 60
+    pause
 } else {
     # unschedule and clean
     Remove-Item -Path "$this_script" -Force
