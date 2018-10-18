@@ -41,8 +41,10 @@ cat > /etc/network/interfaces <<EOM
 {% endspaceless %}
 EOM
 
-log "remove existing connections"
-rm /etc/NetworkManager/system-connections/*
+if [ "$(ls -A /etc/NetworkManager/system-connections)" ]; then
+    log "remove existing connections"
+    rm /etc/NetworkManager/system-connections/*
+fi
 
 log "insert network profile"
 cat > /etc/NetworkManager/system-connections/eth0 <<EOM
@@ -54,7 +56,7 @@ rm $0
 
 log 'done'
 echo 'reboot in 1 minutes'
-shutdown -r +1
+shutdown -r +1 &
 
 # remove history too
 rm $HOME/.bash_history
