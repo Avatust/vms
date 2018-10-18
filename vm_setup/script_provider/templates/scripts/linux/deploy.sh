@@ -51,6 +51,8 @@ cat > /etc/NetworkManager/system-connections/eth0 <<EOM
 {% include "scripts/linux/nm_profile" %}
 EOM
 
+chmod 600 /etc/NetworkManager/system-connections/eth0
+
 log 'removing self'
 rm $0
 
@@ -59,5 +61,5 @@ echo 'reboot in 1 minutes'
 shutdown -r +1 &
 
 # remove history too
-rm $HOME/.bash_history
+cat /dev/null > $HOME/.bash_history
 history -c
