@@ -5,6 +5,7 @@ $ErrorActionPreference = 'Inquire'
 {% include "scripts/windows/create_ad.ps1" %}
 {% include "scripts/windows/disable_updates.ps1" %}
 {% include "scripts/windows/forward_dns.ps1" %}
+{% include "scripts/windows/install_ms_office.ps1" %}
 {% include "scripts/windows/join_domain.ps1" %}
 
 
@@ -13,6 +14,7 @@ $CHANGE_IP = 'CHANGE_IP'
 $CREATE_AD = 'CREATE_AD'
 $DISABLE_UPDATES = 'DISABLE_UPDATES'
 $FORWARD_DNS = 'FORWARD_DNS'
+$INSTALL_MS_OFFICE = 'INSTALL_MS_OFFICE'
 $JOIN_DOMAIN = 'JOIN_DOMAIN'
 
 $W7 = 'windows7'
@@ -103,6 +105,12 @@ if (are_updates_enabled) {
     Sleep -Seconds 1
 } else {
     log 'updates are disabled'
+}
+
+if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
+    log $INSTALL_MS_OFFICE
+    install_ms_office -office_url $office_url
+    Sleep -Seconds 1
 }
 
 if ($log -notcontains 'restarting') {
