@@ -103,6 +103,7 @@ if (are_updates_enabled) {
     log 'UPDATES ENABLED'
     disable_updates
     Sleep -Seconds 1
+    shutdown /r /t 10
 } else {
     log 'updates are disabled'
 }
@@ -115,7 +116,7 @@ if ( ($machine -eq $W10) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
 
 if ($log -notcontains 'restarting') {
     log 'restarting'
-    shutdown /r /t 60 ## decide about this
+    shutdown /r /t 60
 } else {
     # unschedule and clean
     Remove-Item -Path "$this_script" -Force

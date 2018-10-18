@@ -6,14 +6,18 @@ function disable_updates {
         # on PS with a scheduler module it would be:
         # Get-ScheduledTask -TaskPath $tn | Disable-ScheduledTask
 
-        $tasks = schtasks /query /tn $tn /fo csv
-        foreach ($line in $tasks[1..$tasks.Length]) { # skip csv header
-            try {
-                # might try to remove the same task more times sometimes
-                schtasks /delete /tn $line.Split(',')[0].Trim('"') /f
-            } catch {
-                # pass silently
+        try {
+            $tasks = schtasks /query /tn $tn /fo csv
+            foreach ($line in $tasks[1..$tasks.Length]) { # skip csv header
+                try {
+                    # might try to remove the same task more times sometimes
+                    schtasks /delete /tn $line.Split(',')[0].Trim('"') /f
+                } catch {
+                    # pass silently
+                }
             }
+        } catch {
+            # if schtasks spits out error
         }
     }
 
