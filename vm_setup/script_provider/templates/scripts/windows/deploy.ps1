@@ -107,7 +107,7 @@ if (are_updates_enabled) {
     log 'updates are disabled'
 }
 
-if ( ($machine -eq $W7) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
+if ( ($machine -eq $W10) -And ($log -notcontains $INSTALL_MS_OFFICE) ) {
     log $INSTALL_MS_OFFICE
     install_ms_office -office_url $office_url
     Sleep -Seconds 1
