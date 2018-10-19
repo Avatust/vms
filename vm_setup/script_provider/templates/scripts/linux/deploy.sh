@@ -28,6 +28,8 @@ esac
 
 log "beginning config, host $HOST_NUM"
 
+dhclient -r
+
 log "resetting /etc/network/interfaces"
 cat > /etc/network/interfaces <<EOM
 {% spaceless %}

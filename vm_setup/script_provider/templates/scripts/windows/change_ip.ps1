@@ -6,6 +6,8 @@ function change_ip {
         [string[]]$dns
     )
 
+    ipconfig /release *
+
     $net_adapter = Get-WmiObject win32_networkadapterconfiguration -filter "ipenabled = 'true'"
 
     if (-Not ($net_adapter -is [System.Management.ManagementBaseObject])) {
