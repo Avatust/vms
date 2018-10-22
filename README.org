@@ -1,0 +1,89 @@
+** About
+
+   This is a small Django project I used for configuration of already
+   deployed virtual machines with no means of setting them up indirectly.
+
+   The need was to generate slightly different configuration scripts
+   for different machines without much hassle.
+
+
+** How does it work?
+
+   There are 3 main parts:
+
+**** ~vm_setup/vm_setup~ - the Django project
+
+     This wires up the project and its components.
+
+     - ~settings.py~ defines, among other things, installed apps (interesting
+       ones for this project are only ~script_provider~, ~staticfiles~,
+       ~log_server~ and ~admin~) and global directories where to look for
+       static files
+     - ~urls.py~ sets up paths (delegates it to the apps)
+
+**** ~vm_setup/script_provider~ - the intended Django app
+
+     Here are the scripts and logic.
+
+     - ~templates/scripts/*~ contain script snippets which are then
+       joined and filled using Django's template system
+     - ~views.py~ cointains the logic on how to render the templates
+       and return the script in HTTP response
+     - ~urls.py~ hooks up URLs with particular views
+     - the rest of the files here aren't really used...
+
+**** ~vm_setup/log_server~ - an optional app for keeping track
+
+     This simple app turned out to be rather handy in debugging the scripts
+     and following which machines needed additional intervention.
+
+     It defines a log entry consisting of:
+       + ~set_number~ - which group the machine was part of
+       + ~machine_os~ - what machine it was
+       + ~message~ - what it had to say
+       + ~created_at~ ~ when the message was received
+
+     The logs can be seen in Django Admin, recent ones in ~<root URL>/log/~
+     or from Django Shell (~python manage.py shell~).
+
+     A new log entry is sent by a POST request to ~<root URL>/log/new/~
+     with supplied values for ~set_number~, ~machine_os~ and ~message~.
+
+
+** Installation
+
+   If anyone wants to reuse this and adjust it for themself just clone the repo.
+   I used it on *Python 3.5* and *Python 3.7* but it should run on any
+   Django-supported version.
+
+**** On Linux
+
+     Make sure you have /Git/ and /Python/ with /PIP/ and /Virtualenv/ installed.
+
+     1. ~git clone https://github.com/Avatust/vms.git~
+     2. ~cd vms~
+     3. ~virtualenv -python=<your python path> env~ (or just use /Pipenv/)
+     4. ~source env/bin/activate~
+     5. ~pip install -r requirements.txt~
+
+
+** Usage
+
+   After after having it installed, prior to using the server one has to create
+   administrator account for the database and database tables (given that
+   Django Admin and database-using apps will be used), to do this:
+
+   1. enter the ~vms/vm_setup~ directory
+   2. ~python manage.py createsuperuser~
+   3. ~python manage.py migrate~
+
+   Now, the server is ready, to run it just enter ~python manage.py runserver~,
+   or to be listening to outside hosts and on port 80 use
+   ~python manage.py runserver 0:80~, note that Django's native server is pretty
+   insecure, especially in debug mode.
+
+   On the machines download the scripts using /wget/, /curl/, /Invoke-WebRequest/,
+   use the internet browser, etc. For example:
+     - ~wget <IP>/kali/7~
+     - ~Invoke-WebRequest <IP>/wserver/8 -outfile config.ps1~
+     - ~(New-Object Net.WebClient).DownloadFile('http://<IP>/windows7/2', 'config.ps1')~
